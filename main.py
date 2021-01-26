@@ -39,7 +39,7 @@ def main():
         print("{} not implemented".format(system))
         return
  
-    print("Welcome to the HW1 Dialog System")
+    print("Welcome to the HW2 Dialog System")
     while True:
         inputStr = input("> ")
         if inputStr == "Quit":

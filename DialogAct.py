@@ -1,9 +1,9 @@
 from DialogActTypes import DialogActTypes
 
+
 class DialogAct:
 
-    def __init__(self):
-        self.DialogActType = DialogActTypes.UNDEFINED
-        
-        # add whatever else you want a dialog act to contain here
-        # some suggestions: strings, elements of the dialog frame, etc.
+    def __init__(self, dialogActType, semantic_frame=None):
+        self.DialogActType = dialogActType
+        self.semantic_frame = semantic_frame
+        self.semantic_intent = self.semantic_frame.Intent if self.semantic_frame else None
