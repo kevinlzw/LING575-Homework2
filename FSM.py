@@ -16,7 +16,7 @@ class FSM:
             'size': {'INFORM_size': 'crust'},
             'crust': {'INFORM_crust': 'side'},
             'side': {'INFORM_side': 'drinks'},
-            'drinks': {'INFORM_drinks': 'delivery_type'},
+            'drinks': {'INFORM_drink': 'delivery_type'},
             'delivery_type': {'INFORM_delivery': 'address', 'INFORM_pick_up': 'name'},
             'address': {'INFORM_address': 'name'},
             'name': {'INFORM_name': 'phone'},
@@ -27,8 +27,9 @@ class FSM:
     def execute(self, inputStr):
         if inputStr == 'repeat' and self.prev:
             return self.prev
-        # TODO: seperate cancel and start-over. Cancel should stop the system. Start-over should start again.
-        if inputStr == 'cancel' or inputStr == 'start-over':
+        if inputStr == 'cancel':
+            raise UserWarning('The order is canceled.')
+        if inputStr == 'start-over':
             self.NLU.resetSemanticFrame()
             self.curState = 'pizza'
             self.prev = self.NLG.generate(DialogAct(DialogActTypes.HELLO))
@@ -39,7 +40,10 @@ class FSM:
             self.curState = 'pizza'
             self.prev = self.NLG.generate(DialogAct(DialogActTypes.HELLO))
             return self.prev
-        semantic_frame = self.NLU.parse(inputStr)
+        try:
+            semantic_frame = self.NLU.parse(inputStr)
+        except Exception as e:
+            return str(e)
         if semantic_frame.Intent in self.transitions[self.curState]:
             self.curState = self.transitions[self.curState][semantic_frame.Intent]
             dialogAct = DialogAct(DialogActTypes.REQUEST, semantic_frame)
@@ -47,4 +51,4 @@ class FSM:
             return self.prev
         else:
             return self.NLG.generate(DialogAct(DialogActTypes.REQALTS))
-        # TODO: put dialogActType confirm here.
+

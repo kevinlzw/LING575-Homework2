@@ -1,5 +1,4 @@
 class PizzaMenu:
-    # TODO: case sensitivity
     pizzas = ['hawaiian', 'meat Lovers', '4 cheese', 'pepperoni', 'veggie supreme', 'vegan']
     Toppings = ['mozzarella', 'cheddar', 'swiss', 'provolone', 'pineapple', 'green peppers', 'green peppers', 'red onions',
                 'mushrooms', 'black olives', 'pepperoni', 'ham', 'bacon', 'sausage']

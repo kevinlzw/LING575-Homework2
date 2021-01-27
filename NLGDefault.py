@@ -24,7 +24,7 @@ class NLGDefault:
                 return "What sides would you like?"
             elif dialogAct.semantic_intent == 'INFORM_side':
                 return 'What drinks would you like?'
-            elif dialogAct.semantic_intent == 'INFORM_drinks':
+            elif dialogAct.semantic_intent == 'INFORM_drink':
                 return 'Do you want delivery service or pick-up?'
             elif dialogAct.semantic_intent == 'INFORM_delivery':
                 return 'What is your address?'
