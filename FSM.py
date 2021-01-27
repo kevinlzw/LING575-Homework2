@@ -27,6 +27,7 @@ class FSM:
     def execute(self, inputStr):
         if inputStr == 'repeat' and self.prev:
             return self.prev
+        # TODO: seperate cancel and start-over. Cancel should stop the system. Start-over should start again.
         if inputStr == 'cancel' or inputStr == 'start-over':
             self.NLU.resetSemanticFrame()
             self.curState = 'pizza'
@@ -45,4 +46,5 @@ class FSM:
             self.prev = self.NLG.generate(dialogAct)
             return self.prev
         else:
-            return self.NLG.generate(DialogAct(DialogActTypes.CONFIRM))
+            return self.NLG.generate(DialogAct(DialogActTypes.REQALTS))
+        # TODO: put dialogActType confirm here.

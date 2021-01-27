@@ -12,13 +12,17 @@ class NLUDefault:
         self.SemanticFrame = SemanticFrame()
 
     def parse(self, inputStr):
+        # TODO: Check if the slot is filled.
         self.SemanticFrame.Domain = "pizza"
         if 'pizza' in inputStr:
             self.SemanticFrame.Intent = "INFORM_pizza"
             for pizza in PizzaMenu.pizzas:
+                # TODO: ignore case.
                 if pizza in inputStr:
                     self.SemanticFrame.Slots["pizza_type"] = pizza
                     break
+                # TODO: if the pizza is not in the menu, should raise an exception.
+        # TODO: add several toppings.
         elif 'topping' in inputStr:
             self.SemanticFrame.Intent = "INFORM_topping"
             for topping in PizzaMenu.Toppings:

@@ -11,7 +11,7 @@ class NLGDefault:
     def generate(self, dialogAct):
         if dialogAct.DialogActType == DialogActTypes.HELLO:
             return "Welcome to the pizza ordering system. What pizza would you like?"
-        if dialogAct.DialogActType == DialogActTypes.CONFIRM:
+        if dialogAct.DialogActType == DialogActTypes.REQALTS:
             return "I don't understand. Can you answer it again?"
         if dialogAct.DialogActType == DialogActTypes.REQUEST:
             if dialogAct.semantic_intent == 'INFORM_pizza':

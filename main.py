@@ -40,6 +40,7 @@ def main():
         return
  
     print("Welcome to the HW2 Dialog System")
+    # TODO: add user prompt
     while True:
         inputStr = input("> ")
         if inputStr == "Quit":
