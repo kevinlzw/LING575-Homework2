@@ -115,12 +115,15 @@ class FrameDMSimple:
                     self.status = 'REORDER_FAIL'
                 return
             else:
-                self.DialogFrame.cur_order.fillAttribute(self.info, self.confirm_saved_info)
+                try:
+                    self.DialogFrame.cur_order.fillAttribute(self.info, self.confirm_saved_info)
+                except:
+                    pass
             self.status = 'NEXT_THING_TO_ASK'
             self.info = None
             self.confirm_saved_info = None
         else:
-            self.status = 'HELLO'
+            self.status = 'UNKNOWN'
             self.info = None
             self.confirm_saved_info = None
 
@@ -155,4 +158,6 @@ class FrameDMSimple:
             dialogAct.DialogActType = DialogActTypes.GOODBYE
         elif self.status == 'REORDER_FAIL':
             dialogAct.DialogActType = DialogActTypes.INFORM
+        elif self.status == 'UNKNOWN':
+            dialogAct.DialogActType = DialogActTypes.UNDEFINED
         return dialogAct

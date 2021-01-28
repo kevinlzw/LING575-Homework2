@@ -12,6 +12,10 @@ class Order:
     def fillAttribute(self, name, value):
         setattr(self, name, value)
 
+    @staticmethod
+    def allAttribute():
+        return ['pizza', 'crust', 'size', 'topping', 'phone', 'delivery_type', 'address']
+
     def asDict(self):
         return {
             'pizza': self.pizza,
