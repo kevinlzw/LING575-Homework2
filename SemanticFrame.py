@@ -4,4 +4,4 @@ class SemanticFrame:
         self.Domain = None
         self.Intent = None
         self.Slots = {}
-
+        self.info = None

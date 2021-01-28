@@ -1,5 +1,25 @@
+from Order import Order
+
+
 class DialogFrameSimple:
 
     def __init__(self):
         self.FrameName = "DialogFrameSimple"
-        # add whatever fields you want here
+        self.customer_info = {}
+        self.cur_order = Order()
+
+    def ifPhoneHasArchived(self):
+        return self.cur_order.phone in self.customer_info
+
+    def ifCurOrderStarted(self):
+        return self.cur_order.ifOrderStarted()
+
+    def curUnfilledItem(self):
+        return self.cur_order.NotFilledAttribute()
+
+    def ifCurOrderOnlyPhone(self):
+        return self.ifCurOrderOnlyPhone()
+
+    def addCurOrderToArchive(self):
+        self.customer_info[self.cur_order.phone] = self.cur_order
+        self.cur_order = Order()

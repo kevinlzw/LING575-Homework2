@@ -9,3 +9,6 @@ class DialogActTypes(Enum):
     REQALTS = 6
     CONFIRM = 7
     DENY = 8
+    REORDER = 9
+    CHECK = 10
+    REVISE = 11
