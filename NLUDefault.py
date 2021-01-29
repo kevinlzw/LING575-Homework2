@@ -16,7 +16,20 @@ class NLUDefault:
         self.SemanticFrame.Domain = "pizza"
         inputStr = inputStr.lower()
         ifFilled = False
-        if 'pizza' in inputStr:
+        if 'revise' in inputStr:
+            self.SemanticFrame.Intent = 'REVISE_info'
+            ifFoundAttribute = False
+            for attribute in Order.allAttribute():
+                if attribute in inputStr:
+                    # TODO: split into 2 functions. One for revise and one for make orders.
+                    # TODO: self.SemnaticFrame.info = (attribute, the value of the attribute)
+                    # TODO: function called markOrder(pizza, hawaiian)
+                    self.SemanticFrame.info = attribute
+                    ifFoundAttribute = True
+                    break
+            if not ifFoundAttribute:
+                raise NameError('The system cannot recognize the thing you want to revise.')
+        elif 'pizza' in inputStr:
             self.SemanticFrame.Intent = "INFORM_pizza"
             for pizza in PizzaMenu.pizzas:
                 if pizza in inputStr:
@@ -68,16 +81,6 @@ class NLUDefault:
             self.SemanticFrame.Intent = 'CHECK_order'
         elif 'no' in inputStr:
             self.SemanticFrame.Intent = 'REJECT_info'
-        elif 'revise' in inputStr:
-            self.SemanticFrame.Intent = 'REVISE_info'
-            ifFoundAttribute = False
-            for attribute in Order.allAttribute():
-                if attribute in inputStr:
-                    self.SemanticFrame.info = attribute
-                    ifFoundAttribute = True
-                    break
-            if not ifFoundAttribute:
-                raise NameError('The system cannot recognize the thing you want to revise.')
         if not ifFilled:
             raise NameError('The system cannot recognize your input, your option is not in the menu.')
         return self.SemanticFrame

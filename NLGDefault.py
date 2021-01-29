@@ -15,6 +15,8 @@ class NLGDefault:
             return "Do you want a {} {}"
         if dialogAct.DialogActType == DialogActTypes.REQUEST:
             # use dialogAct.info to return the question.
+        elif dialogAct.DialogActType == DialogActTypes.REVISE:
+            # ask what new {info} do you want?
             '''
             if dialogAct.semantic_intent == 'INFORM_pizza':
                 return "What toppings would you like?"
