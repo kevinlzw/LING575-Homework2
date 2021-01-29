@@ -12,3 +12,4 @@ class DialogActTypes(Enum):
     REORDER = 9
     CHECK = 10
     REVISE = 11
+    REPEAT = 12

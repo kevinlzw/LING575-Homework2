@@ -24,3 +24,6 @@ class DialogFrameSimple:
     def addCurOrderToArchive(self):
         self.customer_info[self.cur_order.phone] = self.cur_order
         self.cur_order = Order()
+
+    def resetCurOrder(self):
+        self.cur_order = Order()

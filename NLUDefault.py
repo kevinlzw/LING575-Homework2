@@ -16,7 +16,13 @@ class NLUDefault:
         self.SemanticFrame.Domain = "pizza"
         inputStr = inputStr.lower()
         ifFilled = True
-        if 'revise' in inputStr:
+        if 'cancel' in inputStr:
+            self.SemanticFrame.Intent = 'CANCEL_order'
+        elif 'repeat' in inputStr:
+            self.SemanticFrame.Intent = 'REPEAT_order'
+        elif 'start-over' in inputStr:
+            self.SemanticFrame.Intent = 'START_over'
+        elif 'revise' in inputStr:
             self.SemanticFrame.Intent = 'REVISE_info'
             ifFoundAttribute = False
             for attribute in Order.allAttribute():
@@ -87,7 +93,7 @@ class NLUDefault:
         elif 'no' in inputStr:
             self.SemanticFrame.Intent = 'REJECT_info'
         if not ifFilled:
-            raise NameError('The system cannot recognize your input, your option is not in the menu.')
+            self.SemanticFrame.Intent = 'UNKNOWN'
         cur_semantic_frame = self.SemanticFrame
         self.resetSemanticFrame()
         return cur_semantic_frame

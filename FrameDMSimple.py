@@ -30,7 +30,19 @@ class FrameDMSimple:
 
     def trackState(self, newSemanticFrame):
         # update self.DialogFrame based on the contents of newSemanticFrame
-        if newSemanticFrame.Intent == 'INFORM_pizza':
+        if newSemanticFrame.Intent == 'START_over':
+            self.DialogFrame.resetCurOrder()
+            print('Your order is reset.')
+            self.status = 'NEXT_THING_TO_ASK'
+            self.info = None
+            self.confirm_saved_info = None
+        elif newSemanticFrame.Intent == 'CANCEL_order':
+            raise Warning('Your order is canceled.')
+        elif newSemanticFrame.Intent == 'REPEAT_order':
+            self.status = 'REPEAT'
+            self.info = None
+            self.confirm_saved_info = None
+        elif newSemanticFrame.Intent == 'INFORM_pizza':
             if not self.DialogFrame.cur_order.pizza:
                 self.status = 'CONFIRM'
                 self.info = 'pizza'
@@ -124,8 +136,9 @@ class FrameDMSimple:
     def selectDialogAct(self):
         # decide on what dialog act to execute
         dialogAct = DialogAct()
-
-        if self.status == 'CONFIRM':
+        if self.status == 'REPEAT':
+            dialogAct.DialogActType = DialogActTypes.REPEAT
+        elif self.status == 'CONFIRM':
             dialogAct.DialogActType = DialogActTypes.CONFIRM
             dialogAct.info = (self.info, self.confirm_saved_info)
         elif self.status == 'NEXT_THING_TO_ASK':

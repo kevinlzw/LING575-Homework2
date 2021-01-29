@@ -49,6 +49,7 @@ def main():
             outputStr = DMModule.execute(inputStr)
         except Exception as e:
             print(e)
+            break
 
         print(outputStr)
         

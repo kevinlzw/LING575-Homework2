@@ -27,19 +27,28 @@ class NLGDefault:
     def __init__(self):
         # add whatever fields you want here
         self.Name = "NLGDefault"
+        self.prev = None
 
     def generate(self, dialogAct):
+        if dialogAct.DialogActType == DialogActTypes.REPEAT:
+            return self.prev
         if dialogAct.DialogActType == DialogActTypes.CONFIRM:
-            return confrim_phrase[dialogAct.info[0]].format(dialogAct.info[1])
+            self.prev = confrim_phrase[dialogAct.info[0]].format(dialogAct.info[1])
+            return self.prev
         if dialogAct.DialogActType == DialogActTypes.REQUEST:
             # TODO come up with a better string
             if dialogAct.info[1]:
-                return dialogAct.info[1] + request_phrase[dialogAct.info[0]]
-            return request_phrase[dialogAct.info[0]]
+                self.prev = dialogAct.info[1] + request_phrase[dialogAct.info[0]]
+                return self.prev
+            self.prev = request_phrase[dialogAct.info[0]]
+            return self.prev
         elif dialogAct.DialogActType == DialogActTypes.REVISE:
             # ask what new {info} do you want?
-            return "Okay, what is your new {}?".format(dialogAct.info)
+            self.prev = "Okay, what is your new {}?".format(dialogAct.info)
+            return self.prev
         elif dialogAct.DialogActType == DialogActTypes.UNDEFINED:
-            return "I don't understand, can you say it again?"
+            self.prev = "I don't understand, can you say it again?"
+            return self.prev
         elif dialogAct.DialogActType == DialogActTypes.GOODBYE:
-            return "Thank you, your order for a {} pizza is on the way".format(dialogAct.info)
+            self.prev = "Thank you, your order for a {} pizza is on the way".format(dialogAct.info)
+            return self.prev
