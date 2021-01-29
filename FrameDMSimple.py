@@ -30,7 +30,11 @@ class FrameDMSimple:
 
     def trackState(self, newSemanticFrame):
         # update self.DialogFrame based on the contents of newSemanticFrame
-        if newSemanticFrame.Intent == 'START_over':
+        if newSemanticFrame.Intent == 'INFORM_reorder':
+            self.status = 'REQUEST_phone_reorder'
+            self.info = None
+            self.confirm_saved_info = None
+        elif newSemanticFrame.Intent == 'START_over':
             self.DialogFrame.resetCurOrder()
             print('Your order is reset.')
             self.status = 'NEXT_THING_TO_ASK'
@@ -76,7 +80,25 @@ class FrameDMSimple:
                 self.status = 'REVISE'
                 self.info = 'topping'
         elif newSemanticFrame.Intent == 'INFORM_phone':
-            if not self.DialogFrame.cur_order.phone:
+            if self.status == 'REQUEST_phone_reorder':
+                if newSemanticFrame.info in self.DialogFrame.customer_preferred_order:
+                    preferred_order = self.DialogFrame.customer_preferred_order[newSemanticFrame.info]
+                    self.DialogFrame.cur_order = preferred_order
+                    self.status = 'NEXT_THING_TO_ASK'
+                else:
+                    self.status = 'NEXT_THING_TO_ASK'
+                    self.info = 'no_reorder'
+                    self.confirm_saved_info = None
+            elif self.status == 'REQUEST_phone_check':
+                if newSemanticFrame.info in self.DialogFrame.ongoing_order:
+                    check_order = self.DialogFrame.ongoing_order[newSemanticFrame.info]
+                    self.status = 'RETURN_check'
+                    self.info = check_order
+                else:
+                    self.status = 'NEXT_THING_TO_ASK'
+                    self.info = 'no_check'
+                    self.confirm_saved_info = None
+            elif not self.DialogFrame.cur_order.phone:
                 self.status = 'CONFIRM'
                 self.info = 'phone'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -107,11 +129,8 @@ class FrameDMSimple:
             else:
                 self.status = 'REVISE'
                 self.info = 'address'
-        elif newSemanticFrame.Intent == 'INFORM_reorder':
-            self.status = 'CONFIRM'
-            self.info = 'reorder'
         elif newSemanticFrame.Intent == 'CHECK_order':
-            self.status = 'CHECK'
+            self.status = 'REQUEST_phone_check'
             self.info = None
         elif newSemanticFrame.Intent == 'REJECT_info':
             self.status = 'NEXT_THING_TO_ASK'
@@ -155,6 +174,12 @@ class FrameDMSimple:
                 elif self.info == 'confused':
                     dialogAct.info = (next_unfilled_item, 'I am confused. ')
                     self.info = None
+                elif self.info == 'no_reorder':
+                    dialogAct.info = (next_unfilled_item, 'You have no preferred order. ')
+                    self.info = None
+                elif self.info == 'no_check':
+                    dialogAct.info = (next_unfilled_item, 'You have no ongoing order. ')
+                    self.info = None
                 else:
                     dialogAct.info = (next_unfilled_item, None)
         elif self.status == 'REVISE':
@@ -162,4 +187,9 @@ class FrameDMSimple:
             dialogAct.info = self.info
         elif self.status == 'UNKNOWN':
             dialogAct.DialogActType = DialogActTypes.UNDEFINED
+        elif self.status == 'REQUEST_phone_reorder' or self.status == 'REQUEST_phone_check':
+            dialogAct.DialogActType = DialogActTypes.REORDER
+        elif self.status == 'RETURN_check':
+            dialogAct.DialogActType = DialogActTypes.RETURN_CHECK
+            dialogAct.info = self.info
         return dialogAct

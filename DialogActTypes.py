@@ -13,3 +13,4 @@ class DialogActTypes(Enum):
     CHECK = 10
     REVISE = 11
     REPEAT = 12
+    RETURN_CHECK = 13

@@ -52,3 +52,9 @@ class NLGDefault:
         elif dialogAct.DialogActType == DialogActTypes.GOODBYE:
             self.prev = "Thank you, your order for a {} pizza is on the way".format(dialogAct.info)
             return self.prev
+        elif dialogAct.DialogActType == DialogActTypes.REORDER:
+            self.prev = "Please type in your phone number."
+            return self.prev
+        elif dialogAct.DialogActType == DialogActTypes.RETURN_CHECK:
+            self.prev = "Great, thank you. I see there is an order for a {} pizza currently on its way".format(dialogAct.info)
+            return self.prev
