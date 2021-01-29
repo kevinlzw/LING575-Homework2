@@ -4,6 +4,7 @@ from Order import Order
 class DialogFrameSimple:
 
     def __init__(self):
+        # For Q3
         self.FrameName = "DialogFrameSimple"
         self.customer_info = {}
         self.cur_order = Order()

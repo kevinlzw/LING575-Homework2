@@ -39,16 +39,18 @@ class Order:
         return self.phone is not None
 
     def NotFilledAttribute(self):
-        if not self.phone:
-            return 'phone'
-        elif not self.pizza:
+        if not self.pizza:
             return 'pizza'
-        elif not self.crust:
-            return 'crust'
         elif not self.topping:
             return 'topping'
+        elif not self.crust:
+            return 'crust'
+        elif not self.size:
+            return 'size'
         elif not self.delivery_type:
             return 'delivery_type'
         elif not self.address and self.delivery_type == 'delivery':
             return 'address'
+        elif not self.phone:
+            return 'phone'
         return

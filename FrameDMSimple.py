@@ -84,6 +84,15 @@ class FrameDMSimple:
             else:
                 self.status = 'REVISE'
                 self.info = 'delivery'
+        elif newSemanticFrame.Intent == 'INFORM_pick-up':
+            if not self.DialogFrame.cur_order.delivery_type:
+                # self.DialogFrame.cur_order.delivery_type = newSemanticFrame.info
+                self.status = 'CONFIRM'
+                self.info = 'pick-up'
+                self.confirm_saved_info = newSemanticFrame.info
+            else:
+                self.status = 'REVISE'
+                self.info = 'pick-up'
         elif newSemanticFrame.Intent == 'INFORM_address':
             if not self.DialogFrame.cur_order.address:
                 # self.DialogFrame.cur_order.address = newSemanticFrame.info
