@@ -39,7 +39,7 @@ def main():
         print("{} not implemented".format(system))
         return
  
-    print("Welcome to the HW2 Dialog System")
+    print("Welcome to the pizza ordering system. How can we help you?")
     while True:
         inputStr = input("> ")
         if inputStr == "Quit":

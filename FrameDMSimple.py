@@ -37,6 +37,7 @@ class FrameDMSimple:
                 self.info = 'pizza'
                 self.confirm_saved_info = newSemanticFrame.info
             else:
+                self.DialogFrame.cur_order.pizza = None
                 self.status = 'REVISE'
                 self.info = 'pizza'
         elif newSemanticFrame.Intent == 'INFORM_crust':

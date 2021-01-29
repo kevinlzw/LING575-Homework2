@@ -19,7 +19,7 @@ class DialogFrameSimple:
         return self.cur_order.NotFilledAttribute()
 
     def ifCurOrderOnlyPhone(self):
-        return self.ifCurOrderOnlyPhone()
+        return self.cur_order.ifOnlyPhone()
 
     def addCurOrderToArchive(self):
         self.customer_info[self.cur_order.phone] = self.cur_order

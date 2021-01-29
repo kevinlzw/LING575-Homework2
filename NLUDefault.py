@@ -15,7 +15,7 @@ class NLUDefault:
     def parse(self, inputStr):
         self.SemanticFrame.Domain = "pizza"
         inputStr = inputStr.lower()
-        ifFilled = False
+        ifFilled = True
         if 'revise' in inputStr:
             self.SemanticFrame.Intent = 'REVISE_info'
             ifFoundAttribute = False
@@ -31,25 +31,31 @@ class NLUDefault:
                 raise NameError('The system cannot recognize the thing you want to revise.')
         elif 'pizza' in inputStr:
             self.SemanticFrame.Intent = "INFORM_pizza"
+            added = False
             for pizza in PizzaMenu.pizzas:
                 if pizza in inputStr:
                     self.SemanticFrame.info = pizza
-                    ifFilled = True
+                    added = True
                     break
+            ifFilled &= added
         elif 'topping' in inputStr:
             self.SemanticFrame.Intent = "INFORM_topping"
+            added = False
             for topping in PizzaMenu.Toppings:
                 if topping in inputStr:
                     self.SemanticFrame.info = topping
-                    ifFilled = True
+                    added = True
                     break
+            ifFilled &= added
         elif 'crust' in inputStr:
             self.SemanticFrame.Intent = "INFORM_crust"
+            added = False
             for crust in PizzaMenu.crusts:
                 if crust in inputStr:
                     self.SemanticFrame.info = crust
-                    ifFilled = True
+                    added = True
                     break
+            ifFilled &= added
         elif 'size' in inputStr:
             self.SemanticFrame.Intent = "INFORM_size"
             for size in PizzaMenu.sizes:
