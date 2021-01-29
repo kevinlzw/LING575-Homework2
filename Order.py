@@ -27,6 +27,9 @@ class Order:
             'address': self.address
         }
 
+    def __str__(self):
+        return '{} {} with {} crust and {} topping'.format(self.size, self.pizza, self.crust, self.topping)
+
     def ifOrderStarted(self):
         return not (
                 not self.pizza and not self.crust and not self.size and not self.topping and not self.phone and not self.delivery_type and not self.address)

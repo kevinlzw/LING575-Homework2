@@ -58,27 +58,26 @@ class NLUDefault:
             ifFilled &= added
         elif 'size' in inputStr:
             self.SemanticFrame.Intent = "INFORM_size"
+            added = False
             for size in PizzaMenu.sizes:
                 if size in inputStr:
                     self.SemanticFrame.info = size
                     ifFilled = True
+                    added = True
                     break
+            ifFilled &= added
         elif 'pick-up' in inputStr:
             self.SemanticFrame.Intent = "INFORM_pick_up"
             self.SemanticFrame.info = 'pick-up'
-            ifFilled = True
         elif 'delivery' in inputStr:
             self.SemanticFrame.Intent = "INFORM_delivery"
             self.SemanticFrame.info = 'delivery'
-            ifFilled = True
-        elif re.compile("^[\dA-Z]{3}-[\dA-Z]{3}-[\dA-Z]{4}$", re.IGNORECASE).match(inputStr) is not None:
+        elif re.compile("^.*[\dA-Z]{3}-[\dA-Z]{3}-[\dA-Z]{4}.*$", re.IGNORECASE).match(inputStr) is not None:
             self.SemanticFrame.Intent = 'INFORM_phone'
-            self.SemanticFrame.info = inputStr
-            ifFilled = True
+            self.SemanticFrame.info = re.findall('[\dA-Z]{3}-[\dA-Z]{3}-[\dA-Z]{4}', inputStr)[0]
         elif 'address' in inputStr:
             self.SemanticFrame.Intent = 'INFORM_address'
-            self.SemanticFrame.info = inputStr
-            ifFilled = True
+            self.SemanticFrame.info = inputStr.replace('address', '')
         elif 'yes' in inputStr:
             self.SemanticFrame.Intent = 'CONFIRM_info'
         elif 'reorder' in inputStr:
@@ -89,4 +88,6 @@ class NLUDefault:
             self.SemanticFrame.Intent = 'REJECT_info'
         if not ifFilled:
             raise NameError('The system cannot recognize your input, your option is not in the menu.')
-        return self.SemanticFrame
+        cur_semantic_frame = self.SemanticFrame
+        self.resetSemanticFrame()
+        return cur_semantic_frame

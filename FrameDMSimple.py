@@ -32,7 +32,6 @@ class FrameDMSimple:
         # update self.DialogFrame based on the contents of newSemanticFrame
         if newSemanticFrame.Intent == 'INFORM_pizza':
             if not self.DialogFrame.cur_order.pizza:
-                # self.DialogFrame.cur_order.pizza = newSemanticFrame.info
                 self.status = 'CONFIRM'
                 self.info = 'pizza'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -42,7 +41,6 @@ class FrameDMSimple:
                 self.info = 'pizza'
         elif newSemanticFrame.Intent == 'INFORM_crust':
             if not self.DialogFrame.cur_order.crust:
-                # self.DialogFrame.cur_order.crust = newSemanticFrame.info
                 self.status = 'CONFIRM'
                 self.info = 'crust'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -51,7 +49,6 @@ class FrameDMSimple:
                 self.info = 'crust'
         elif newSemanticFrame.Intent == 'INFORM_size':
             if not self.DialogFrame.cur_order.size:
-                # self.DialogFrame.cur_order.size = newSemanticFrame.info
                 self.status = 'CONFIRM'
                 self.info = 'size'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -60,7 +57,6 @@ class FrameDMSimple:
                 self.info = 'size'
         elif newSemanticFrame.Intent == 'INFORM_topping':
             if not self.DialogFrame.cur_order.topping:
-                # self.DialogFrame.cur_order.size = newSemanticFrame.info
                 self.status = 'CONFIRM'
                 self.info = 'topping'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -69,7 +65,6 @@ class FrameDMSimple:
                 self.info = 'topping'
         elif newSemanticFrame.Intent == 'INFORM_phone':
             if not self.DialogFrame.cur_order.phone:
-                # self.DialogFrame.cur_order.phone = newSemanticFrame.info
                 self.status = 'CONFIRM'
                 self.info = 'phone'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -78,25 +73,22 @@ class FrameDMSimple:
                 self.info = 'phone'
         elif newSemanticFrame.Intent == 'INFORM_delivery':
             if not self.DialogFrame.cur_order.delivery_type:
-                # self.DialogFrame.cur_order.delivery_type = newSemanticFrame.info
                 self.status = 'CONFIRM'
-                self.info = 'delivery'
+                self.info = 'delivery_type'
                 self.confirm_saved_info = newSemanticFrame.info
             else:
                 self.status = 'REVISE'
-                self.info = 'delivery'
-        elif newSemanticFrame.Intent == 'INFORM_pick-up':
+                self.info = 'delivery_type'
+        elif newSemanticFrame.Intent == 'INFORM_pick_up':
             if not self.DialogFrame.cur_order.delivery_type:
-                # self.DialogFrame.cur_order.delivery_type = newSemanticFrame.info
                 self.status = 'CONFIRM'
-                self.info = 'pick-up'
+                self.info = 'delivery_type'
                 self.confirm_saved_info = newSemanticFrame.info
             else:
                 self.status = 'REVISE'
                 self.info = 'pick-up'
         elif newSemanticFrame.Intent == 'INFORM_address':
             if not self.DialogFrame.cur_order.address:
-                # self.DialogFrame.cur_order.address = newSemanticFrame.info
                 self.status = 'CONFIRM'
                 self.info = 'address'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -117,57 +109,44 @@ class FrameDMSimple:
             self.status = 'REVISE'
             self.info = newSemanticFrame.info
         elif newSemanticFrame.Intent == 'CONFIRM_info':
-            if self.info == 'reorder':
-                if self.DialogFrame.cur_order.ifPhoneFilled() and self.DialogFrame.ifPhoneHasArchived():
-                    self.DialogFrame.cur_order = self.DialogFrame.customer_info[self.DialogFrame.cur_order.phone]
-                    self.status = 'REORDER_COMPLETE'
-                else:
-                    self.status = 'REORDER_FAIL'
-                return
-            else:
-                try:
-                    self.DialogFrame.cur_order.fillAttribute(self.info, self.confirm_saved_info)
-                except:
-                    pass
+            try:
+                self.DialogFrame.cur_order.fillAttribute(self.info, self.confirm_saved_info)
+            except:
+                pass
             self.status = 'NEXT_THING_TO_ASK'
-            self.info = None
+            self.info = 'ok'
             self.confirm_saved_info = None
         else:
-            self.status = 'UNKNOWN'
-            self.info = None
+            self.status = 'NEXT_THING_TO_ASK'
+            self.info = 'confused'
             self.confirm_saved_info = None
 
     def selectDialogAct(self):
         # decide on what dialog act to execute
-        # by default, return a Hello dialog act
         dialogAct = DialogAct()
 
         if self.status == 'CONFIRM':
             dialogAct.DialogActType = DialogActTypes.CONFIRM
             dialogAct.info = (self.info, self.confirm_saved_info)
         elif self.status == 'NEXT_THING_TO_ASK':
-            if self.DialogFrame.ifCurOrderOnlyPhone():
-                if self.DialogFrame.cur_order.phone in self.DialogFrame.customer_info:
-                    dialogAct.DialogActType = DialogActTypes.REORDER
-                    dialogAct.info = self.DialogFrame.cur_order.phone
-                    return dialogAct
             next_unfilled_item = self.DialogFrame.curUnfilledItem()
             if not next_unfilled_item:
                 dialogAct.DialogActType = DialogActTypes.GOODBYE
+                dialogAct.info = str(self.DialogFrame.cur_order)
                 self.DialogFrame.addCurOrderToArchive()
             else:
                 dialogAct.DialogActType = DialogActTypes.REQUEST
-                dialogAct.info = next_unfilled_item
-        elif self.status == 'CHECK':
-            dialogAct.DialogActType = DialogActTypes.CHECK
-            dialogAct.info = self.DialogFrame.cur_order.asDict()
+                if self.info == 'ok':
+                    dialogAct.info = (next_unfilled_item, 'Okay. ')
+                    self.info = None
+                elif self.info == 'confused':
+                    dialogAct.info = (next_unfilled_item, 'I am confused. ')
+                    self.info = None
+                else:
+                    dialogAct.info = (next_unfilled_item, None)
         elif self.status == 'REVISE':
             dialogAct.DialogActType = DialogActTypes.REVISE
             dialogAct.info = self.info
-        elif self.status == 'REORDER_COMPLETE':
-            dialogAct.DialogActType = DialogActTypes.GOODBYE
-        elif self.status == 'REORDER_FAIL':
-            dialogAct.DialogActType = DialogActTypes.INFORM
         elif self.status == 'UNKNOWN':
             dialogAct.DialogActType = DialogActTypes.UNDEFINED
         return dialogAct
