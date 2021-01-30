@@ -1,6 +1,7 @@
 from DialogFrameSimple import DialogFrameSimple
 from DialogAct import DialogAct
 from DialogActTypes import DialogActTypes
+from Specialty import SpecialtyPizza
 
 
 class FrameDMSimple:
@@ -46,6 +47,16 @@ class FrameDMSimple:
             self.status = 'REPEAT'
             self.info = None
             self.confirm_saved_info = None
+        elif newSemanticFrame.Intent == 'INFORM_specialty':
+            if not self.DialogFrame.cur_order.pizza:
+                self.DialogFrame.cur_order = SpecialtyPizza(newSemanticFrame.info)
+                self.status = 'CONFIRM'
+                self.info = 'specialty'
+                self.confirm_saved_info = newSemanticFrame.info
+            else:
+                self.DialogFrame.cur_order.pizza = None
+                self.status = 'REVISE'
+                self.info = 'specialty'
         elif newSemanticFrame.Intent == 'INFORM_pizza':
             if not self.DialogFrame.cur_order.pizza:
                 self.status = 'CONFIRM'

@@ -4,7 +4,7 @@ class Order:
         self.pizza = pizza
         self.crust = crust
         self.size = size
-        self.topping = topping
+        self.topping = topping  # need to modify this to a list
         self.phone = None
         self.delivery_type = None
         self.address = None

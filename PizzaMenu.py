@@ -1,5 +1,6 @@
 class PizzaMenu:
-    pizzas = ['hawaiian', 'meat Lovers', '4 cheese', 'pepperoni', 'veggie supreme', 'vegan']
+    specialty = ['hawaiian', 'meat Lovers', 'veggie supreme', 'vegan']
+    pizzas = ['4 cheese', 'pepperoni']
     Toppings = ['mozzarella', 'cheddar', 'swiss', 'provolone', 'pineapple', 'green peppers', 'green peppers', 'red onions',
                 'mushrooms', 'black olives', 'pepperoni', 'ham', 'bacon', 'sausage']
     crusts = ['thin', 'regular', 'deep dish', 'gluten free']

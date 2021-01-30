@@ -1,7 +1,8 @@
 from DialogAct import DialogAct
 from DialogActTypes import DialogActTypes
 
-confrim_phrase = {
+confirm_phrase = {
+    'specialty': 'To confirm, you want a {} specialy pizza',
     'pizza': 'To confirm, you want a {} pizza',
     'topping': 'To confirm, your topping for your pizza is {}',
     'crust': 'To confirm, your crust selection is {} crust',
@@ -33,7 +34,7 @@ class NLGDefault:
         if dialogAct.DialogActType == DialogActTypes.REPEAT:
             return self.prev
         if dialogAct.DialogActType == DialogActTypes.CONFIRM:
-            self.prev = confrim_phrase[dialogAct.info[0]].format(dialogAct.info[1])
+            self.prev = confirm_phrase[dialogAct.info[0]].format(dialogAct.info[1])
             return self.prev
         if dialogAct.DialogActType == DialogActTypes.REQUEST:
             # TODO come up with a better string
