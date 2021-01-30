@@ -4,7 +4,7 @@ This is an FST implementation for Homework 2, Questions 1 and 2.
 To run, the configuration must pass in the parameter "-s FSM"
 ![](.README_images/configuration.png)
 
-**main.py** is the entry point for the program.
+**hw2_q1_q2.py** is the entry point for the program.
 
 Requirements: each response must include a keyword for the intent
 - Pizza: "I want a vegan pizza"
