@@ -48,8 +48,7 @@ class FrameDMSimple:
             self.info = None
             self.confirm_saved_info = None
         elif newSemanticFrame.Intent == 'INFORM_specialty':
-            if not self.DialogFrame.cur_order.pizza:
-                self.DialogFrame.cur_order = SpecialtyPizza(newSemanticFrame.info)
+            if not self.DialogFrame.cur_order.pizza or self.status == 'REVISE':
                 self.status = 'CONFIRM'
                 self.info = 'specialty'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -58,7 +57,7 @@ class FrameDMSimple:
                 self.status = 'REVISE'
                 self.info = 'specialty'
         elif newSemanticFrame.Intent == 'INFORM_pizza':
-            if not self.DialogFrame.cur_order.pizza:
+            if not self.DialogFrame.cur_order.pizza or self.status == 'REVISE':
                 self.status = 'CONFIRM'
                 self.info = 'pizza'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -67,7 +66,7 @@ class FrameDMSimple:
                 self.status = 'REVISE'
                 self.info = 'pizza'
         elif newSemanticFrame.Intent == 'INFORM_crust':
-            if not self.DialogFrame.cur_order.crust:
+            if not self.DialogFrame.cur_order.crust or self.status == 'REVISE':
                 self.status = 'CONFIRM'
                 self.info = 'crust'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -75,7 +74,7 @@ class FrameDMSimple:
                 self.status = 'REVISE'
                 self.info = 'crust'
         elif newSemanticFrame.Intent == 'INFORM_size':
-            if not self.DialogFrame.cur_order.size:
+            if not self.DialogFrame.cur_order.size or self.status == 'REVISE':
                 self.status = 'CONFIRM'
                 self.info = 'size'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -83,7 +82,7 @@ class FrameDMSimple:
                 self.status = 'REVISE'
                 self.info = 'size'
         elif newSemanticFrame.Intent == 'INFORM_topping':
-            if not self.DialogFrame.cur_order.topping:
+            if not self.DialogFrame.cur_order.topping or self.status == 'REVISE':
                 self.status = 'CONFIRM'
                 self.info = 'topping'
                 self.confirm_saved_info = newSemanticFrame.info
@@ -151,10 +150,13 @@ class FrameDMSimple:
             self.status = 'REVISE'
             self.info = newSemanticFrame.info
         elif newSemanticFrame.Intent == 'CONFIRM_info':
-            try:
-                self.DialogFrame.cur_order.fillAttribute(self.info, self.confirm_saved_info)
-            except:
-                pass
+            if self.info == 'specialty':
+                self.DialogFrame.cur_order = SpecialtyPizza(self.confirm_saved_info)
+            else:
+                try:
+                    self.DialogFrame.cur_order.fillAttribute(self.info, self.confirm_saved_info)
+                except:
+                    pass
             self.status = 'NEXT_THING_TO_ASK'
             self.info = 'ok'
             self.confirm_saved_info = None

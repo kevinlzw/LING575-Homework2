@@ -37,7 +37,6 @@ class NLGDefault:
             self.prev = confirm_phrase[dialogAct.info[0]].format(dialogAct.info[1])
             return self.prev
         if dialogAct.DialogActType == DialogActTypes.REQUEST:
-            # TODO come up with a better string
             if dialogAct.info[1]:
                 self.prev = dialogAct.info[1] + request_phrase[dialogAct.info[0]]
                 return self.prev

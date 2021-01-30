@@ -27,9 +27,6 @@ class NLUDefault:
             ifFoundAttribute = False
             for attribute in Order.allAttribute():
                 if attribute in input_str:
-                    # TODO: split into 2 functions. One for revise and one for make orders.
-                    # TODO: self.SemnaticFrame.info = (attribute, the value of the attribute)
-                    # TODO: function called markOrder(pizza, hawaiian)
                     self.SemanticFrame.info = attribute
                     ifFoundAttribute = True
                     break
