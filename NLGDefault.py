@@ -2,7 +2,7 @@ from DialogAct import DialogAct
 from DialogActTypes import DialogActTypes
 
 confirm_phrase = {
-    'specialty': 'To confirm, you want a {} specialy pizza',
+    'specialty': 'To confirm, you want a {} specialty pizza',
     'pizza': 'To confirm, you want a {} pizza',
     'topping': 'To confirm, your topping for your pizza is {}',
     'crust': 'To confirm, your crust selection is {} crust',

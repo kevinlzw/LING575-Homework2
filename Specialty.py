@@ -4,8 +4,9 @@ from Order import Order
 class SpecialtyPizza(Order):
 
     def __init__(self, pizzaType):
-        # Order.__init__()
+        Order.__init__(self)
         self.pizza = pizzaType
+        self.specialty = pizzaType
         if pizzaType == 'hawaiian':
             self.crust = 'regular'
             self.size = 'medium'
